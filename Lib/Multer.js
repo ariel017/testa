@@ -13,7 +13,7 @@ var _path = _interopRequireDefault(require("path"));
 
 var storageProfile = _multer["default"].diskStorage({
   destination: function destination(req, res, cb) {
-    cb(null, 'src/Uploads/Profile');
+    cb(null, 'Uploads/Profile');
   },
   filename: function filename(req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + _path["default"].extname(file.originalname));
@@ -27,7 +27,7 @@ exports.upLoadsProfile = upLoadsProfile;
 
 var storageProducts = _multer["default"].diskStorage({
   destination: function destination(req, res, cb) {
-    cb(null, 'src/Uploads/Products');
+    cb(null, 'Uploads/Products');
   },
   filename: function filename(req, file, cb) {
     cb(null, file.fieldname + '-' + Date.now() + _path["default"].extname(file.originalname));
