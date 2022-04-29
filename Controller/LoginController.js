@@ -52,7 +52,7 @@ var loginController = /*#__PURE__*/function () {
 
             return _context.abrupt("return", res.status(400).json({
               resp: false,
-              msg: 'Wrong Credentials'
+              msg: 'Usuario o Contraseñas incorrectas'
             }));
 
           case 9:
@@ -84,7 +84,7 @@ var loginController = /*#__PURE__*/function () {
             token = _context.sent;
             res.json({
               resp: true,
-              msg: 'Welcome to Frave Restaurant',
+              msg: 'Bienvenido Lauval Industrias',
               user: {
                 uid: user.uid,
                 firstName: user.firstName,
@@ -148,7 +148,7 @@ var renewTokenLogin = /*#__PURE__*/function () {
             user = userdb[0][0];
             res.json({
               resp: true,
-              msg: 'Welcome to Frave Restaurant',
+              msg: 'Bienvenido Lauval',
               user: {
                 uid: user.uid,
                 firstName: user.firstName,
