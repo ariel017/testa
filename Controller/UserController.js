@@ -268,7 +268,7 @@ var changeImageProfile = /*#__PURE__*/function () {
           case 5:
             imagedb = _context5.sent;
             _context5.next = 8;
-            return _fsExtra["default"].unlink(_path["default"].resolve('src/Uploads/Profile/' + imagedb[0].image));
+            return _fsExtra["default"].unlink(_path["default"].resolve('Uploads/Profile/' + imagedb[0].image));
 
           case 8:
             _context5.next = 10;
