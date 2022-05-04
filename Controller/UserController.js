@@ -317,7 +317,7 @@ var getAddressesUser = /*#__PURE__*/function () {
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : _express.response;
             _context6.prev = 1;
             _context6.next = 4;
-            return _mysql["default"].query('SELECT id, street, reference, Latitude, Longitude FROM addresses WHERE persona_id = ?', [req.uid]);
+            return _mysql["default"].query('SELECT id, name, phone, nit, email, street, reference, Latitude, Longitude FROM addresses WHERE persona_id = ?', [req.uid]);
 
           case 4:
             addressesdb = _context6.sent;
@@ -400,6 +400,10 @@ var addStreetAddress = /*#__PURE__*/function () {
   var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req) {
     var res,
         _req$body3,
+        name,
+        phone,
+        nit,
+        email,
         street,
         reference,
         latitude,
@@ -413,9 +417,9 @@ var addStreetAddress = /*#__PURE__*/function () {
             res = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : _express.response;
             console.log("test123" + req.uid);
             _context8.prev = 2;
-            _req$body3 = req.body, street = _req$body3.street, reference = _req$body3.reference, latitude = _req$body3.latitude, longitude = _req$body3.longitude;
+            _req$body3 = req.body, name = _req$body3.name, phone = _req$body3.phone, nit = _req$body3.nit, email = _req$body3.email, street = _req$body3.street, reference = _req$body3.reference, latitude = _req$body3.latitude, longitude = _req$body3.longitude;
             _context8.next = 6;
-            return _mysql["default"].query('INSERT INTO addresses (street, reference, Latitude, Longitude, persona_id) VALUE (?,?,?,?,?)', [street, reference, latitude, longitude, req.uid]);
+            return _mysql["default"].query('INSERT INTO addresses (name, phone, nit, email, street, reference, Latitude, Longitude, persona_id) VALUE (?,?,?,?,?,?,?,?,?)', [name, phone, nit, email, street, reference, latitude, longitude, req.uid]);
 
           case 6:
             res.json({
