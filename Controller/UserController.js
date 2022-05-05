@@ -317,7 +317,7 @@ var getAddressesUser = /*#__PURE__*/function () {
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : _express.response;
             _context6.prev = 1;
             _context6.next = 4;
-            return _mysql["default"].query('SELECT id, name, phone, nit, email, street, reference, Latitude, Longitude FROM addresses WHERE persona_id = ?', [req.uid]);
+            return _mysql["default"].query('SELECT id, name, phone, nit, email, street, reference, Latitude, Longitude, image FROM addresses WHERE persona_id = ?', [req.uid]);
 
           case 4:
             addressesdb = _context6.sent;
