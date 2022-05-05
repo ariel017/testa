@@ -30,8 +30,9 @@ router.get('/get-user-updated', _ValidateToken.verifyToken, user.getUserUpdated)
 router.put('/change-password', _ValidateToken.verifyToken, user.changePassword);
 router.put('/change-image-profile', [_ValidateToken.verifyToken, _Multer.upLoadsProfile.single('image')], user.changeImageProfile);
 router.get('/get-addresses', _ValidateToken.verifyToken, user.getAddressesUser);
-router["delete"]('/delete-street-address/:idAddress', _ValidateToken.verifyToken, user.deleteStreetAddress);
-router.post('/add-new-address', [_ValidateToken.verifyToken, _Multer.upLoadsProfile.single('image')], user.addStreetAddress);
+router["delete"]('/delete-street-address/:idAddress', _ValidateToken.verifyToken, user.deleteStreetAddress); //router.post('/add-new-address', [ verifyToken, upLoadsProfile.single('image') ], user.addStreetAddress );
+
+router.post('/add-new-address', _ValidateToken.verifyToken, user.addStreetAddress);
 router.get('/get-address', _ValidateToken.verifyToken, user.getAddressOne);
 router.put('/update-notification-token', _ValidateToken.verifyToken, user.updateNotificationToken);
 router.get('/get-admins-notification-token', _ValidateToken.verifyToken, user.getAdminNotificationToken);
