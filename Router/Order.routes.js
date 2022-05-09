@@ -24,7 +24,7 @@ router.post('/add-new-orders', _ValidateToken.verifyToken, orders.addNewOrders);
 router.get('/get-orders-by-status/:statusOrder', _ValidateToken.verifyToken, orders.getOrdersByStatus);
 router.get('/get-details-order-by-id/:idOrderDetails', _ValidateToken.verifyToken, orders.getDetailsOrderById);
 router.put('/update-status-order-dispatched', _ValidateToken.verifyToken, orders.updateStatusToDispatched);
-router.get('/get-all-orders-by-delivery/:statusOrder', _ValidateToken.verifyToken, orders.getOrdersByDelivery);
+router.get('/get-all-orders-by-delivery/:idClient/:statusOrder', _ValidateToken.verifyToken, orders.getOrdersByDelivery);
 router.put('/update-status-order-on-way/:idOrder', _ValidateToken.verifyToken, orders.updateStatusToOntheWay);
 router.put('/update-status-order-delivered/:idOrder', _ValidateToken.verifyToken, orders.updateStatusToDelivered);
 router.get('/get-list-orders-for-client', _ValidateToken.verifyToken, client.getListOrdersForClient);

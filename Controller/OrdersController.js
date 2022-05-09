@@ -182,12 +182,12 @@ var updateStatusToDispatched = /*#__PURE__*/function () {
             _context4.prev = 1;
             _req$body2 = req.body, idDelivery = _req$body2.idDelivery, idOrder = _req$body2.idOrder;
             _context4.next = 5;
-            return _mysql["default"].query('UPDATE orders SET status = ?, delivery_id = ? WHERE id = ?', ['DISPATCHED', idDelivery, idOrder]);
+            return _mysql["default"].query('UPDATE orders SET status = ?, delivery_id = ? WHERE id = ?', ['ASIGNADO', idDelivery, idOrder]);
 
           case 5:
             res.json({
               resp: true,
-              msg: 'Order DISPATCHED'
+              msg: 'Orden ASIGNADO'
             });
             _context4.next = 11;
             break;
@@ -226,33 +226,35 @@ var getOrdersByDelivery = /*#__PURE__*/function () {
           case 0:
             res = _args5.length > 1 && _args5[1] !== undefined ? _args5[1] : _express.response;
             _context5.prev = 1;
-            _context5.next = 4;
-            return _mysql["default"].query("CALL SP_ORDERS_BY_DELIVERY(?,?);", [req.uid, req.params.statusOrder]);
+            console.log(req.params.idClient);
+            console.log(req.params.statusOrder);
+            _context5.next = 6;
+            return _mysql["default"].query("CALL SP_ORDERS_BY_DELIVERY(?,?,?);", [req.uid, req.params.statusOrder, req.params.idClient]);
 
-          case 4:
+          case 6:
             ordersDeliverydb = _context5.sent;
             res.json({
               resp: true,
               msg: 'All Orders By Delivery',
               ordersResponse: ordersDeliverydb[0]
             });
-            _context5.next = 11;
+            _context5.next = 13;
             break;
 
-          case 8:
-            _context5.prev = 8;
+          case 10:
+            _context5.prev = 10;
             _context5.t0 = _context5["catch"](1);
             return _context5.abrupt("return", res.status(500).json({
               resp: false,
               msg: _context5.t0
             }));
 
-          case 11:
+          case 13:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[1, 8]]);
+    }, _callee5, null, [[1, 10]]);
   }));
 
   return function getOrdersByDelivery(_x5) {
@@ -268,6 +270,7 @@ var updateStatusToOntheWay = /*#__PURE__*/function () {
         _req$body3,
         latitude,
         longitude,
+        stateDelivery,
         _args6 = arguments;
 
     return _regenerator["default"].wrap(function _callee6$(_context6) {
@@ -276,9 +279,9 @@ var updateStatusToOntheWay = /*#__PURE__*/function () {
           case 0:
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : _express.response;
             _context6.prev = 1;
-            _req$body3 = req.body, latitude = _req$body3.latitude, longitude = _req$body3.longitude;
+            _req$body3 = req.body, latitude = _req$body3.latitude, longitude = _req$body3.longitude, stateDelivery = _req$body3.stateDelivery;
             _context6.next = 5;
-            return _mysql["default"].query('UPDATE orders SET status = ?, latitude = ?, longitude = ? WHERE id = ?', ['ON WAY', latitude, longitude, req.params.idOrder]);
+            return _mysql["default"].query('UPDATE orders SET status = ?, latitude = ?, longitude = ? WHERE id = ?', [stateDelivery, latitude, longitude, req.params.idOrder]);
 
           case 5:
             res.json({

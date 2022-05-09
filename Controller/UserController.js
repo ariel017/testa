@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateDeliveryToClient = exports.getAdminNotificationToken = exports.updateNotificationToken = exports.getAddressOne = exports.addStreetAddress = exports.deleteStreetAddress = exports.getAddressesUser = exports.changeImageProfile = exports.changePassword = exports.getUserUpdated = exports.editProfile = exports.getUserById = void 0;
+exports.updateDeliveryToClient = exports.getAdminNotificationToken = exports.updateNotificationToken = exports.getAddressOne = exports.addStreetAddress = exports.deleteStreetAddress = exports.getClientDelivery = exports.getAddressesUser = exports.changeImageProfile = exports.changePassword = exports.getUserUpdated = exports.editProfile = exports.getUserById = void 0;
 
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
@@ -268,7 +268,7 @@ var changeImageProfile = /*#__PURE__*/function () {
           case 5:
             imagedb = _context5.sent;
             _context5.next = 8;
-            return _fsExtra["default"].unlink(_path["default"].resolve('Uploads/Profile/' + imagedb[0].image));
+            return _fsExtra["default"].unlink(_path["default"].resolve('src/Uploads/Profile/' + imagedb[0].image));
 
           case 8:
             _context5.next = 10;
@@ -317,7 +317,7 @@ var getAddressesUser = /*#__PURE__*/function () {
             res = _args6.length > 1 && _args6[1] !== undefined ? _args6[1] : _express.response;
             _context6.prev = 1;
             _context6.next = 4;
-            return _mysql["default"].query('SELECT id, name, phone, nit, email, street, reference, Latitude, Longitude, image FROM addresses WHERE persona_id = ?', [req.uid]);
+            return _mysql["default"].query('SELECT id, name, phone, nit, email, street, reference, Latitude, Longitude, image, id as cantOrder FROM addresses WHERE persona_id = ?', [req.uid]);
 
           case 4:
             addressesdb = _context6.sent;
@@ -352,9 +352,10 @@ var getAddressesUser = /*#__PURE__*/function () {
 
 exports.getAddressesUser = getAddressesUser;
 
-var deleteStreetAddress = /*#__PURE__*/function () {
+var getClientDelivery = /*#__PURE__*/function () {
   var _ref7 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee7(req) {
     var res,
+        addressesdb,
         _args7 = arguments;
     return _regenerator["default"].wrap(function _callee7$(_context7) {
       while (1) {
@@ -363,6 +364,52 @@ var deleteStreetAddress = /*#__PURE__*/function () {
             res = _args7.length > 1 && _args7[1] !== undefined ? _args7[1] : _express.response;
             _context7.prev = 1;
             _context7.next = 4;
+            return _mysql["default"].query('select a.*, COUNT(IF(o.status = "ASIGNADO", 1, NULL)) as cantOrder from addresses a left join orders o on o.address_id=a.id WHERE o.delivery_id = ?  GROUP BY a.id', [req.uid]);
+
+          case 4:
+            addressesdb = _context7.sent;
+            res.json({
+              resp: true,
+              msg: 'List the Addresses',
+              listAddresses: addressesdb
+            });
+            _context7.next = 11;
+            break;
+
+          case 8:
+            _context7.prev = 8;
+            _context7.t0 = _context7["catch"](1);
+            return _context7.abrupt("return", res.status(500).json({
+              resp: false,
+              msg: _context7.t0
+            }));
+
+          case 11:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[1, 8]]);
+  }));
+
+  return function getClientDelivery(_x7) {
+    return _ref7.apply(this, arguments);
+  };
+}();
+
+exports.getClientDelivery = getClientDelivery;
+
+var deleteStreetAddress = /*#__PURE__*/function () {
+  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req) {
+    var res,
+        _args8 = arguments;
+    return _regenerator["default"].wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            res = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : _express.response;
+            _context8.prev = 1;
+            _context8.next = 4;
             return _mysql["default"].query('DELETE FROM addresses WHERE id = ? AND persona_id = ?', [req.params.idAddress, req.uid]);
 
           case 4:
@@ -370,34 +417,34 @@ var deleteStreetAddress = /*#__PURE__*/function () {
               resp: true,
               msg: 'Street Address deleted'
             });
-            _context7.next = 10;
+            _context8.next = 10;
             break;
 
           case 7:
-            _context7.prev = 7;
-            _context7.t0 = _context7["catch"](1);
-            return _context7.abrupt("return", res.status(500).json({
+            _context8.prev = 7;
+            _context8.t0 = _context8["catch"](1);
+            return _context8.abrupt("return", res.status(500).json({
               resp: false,
-              msg: _context7.t0
+              msg: _context8.t0
             }));
 
           case 10:
           case "end":
-            return _context7.stop();
+            return _context8.stop();
         }
       }
-    }, _callee7, null, [[1, 7]]);
+    }, _callee8, null, [[1, 7]]);
   }));
 
-  return function deleteStreetAddress(_x7) {
-    return _ref7.apply(this, arguments);
+  return function deleteStreetAddress(_x8) {
+    return _ref8.apply(this, arguments);
   };
 }();
 
 exports.deleteStreetAddress = deleteStreetAddress;
 
 var addStreetAddress = /*#__PURE__*/function () {
-  var _ref8 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee8(req) {
+  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req) {
     var res,
         _req$body3,
         name,
@@ -409,18 +456,18 @@ var addStreetAddress = /*#__PURE__*/function () {
         latitude,
         longitude,
         image,
-        _args8 = arguments;
+        _args9 = arguments;
 
-    return _regenerator["default"].wrap(function _callee8$(_context8) {
+    return _regenerator["default"].wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
-            res = _args8.length > 1 && _args8[1] !== undefined ? _args8[1] : _express.response;
+            res = _args9.length > 1 && _args9[1] !== undefined ? _args9[1] : _express.response;
             console.log("test" + req.uid); //const imagePath = req.file.filename;
 
-            _context8.prev = 2;
+            _context9.prev = 2;
             _req$body3 = req.body, name = _req$body3.name, phone = _req$body3.phone, nit = _req$body3.nit, email = _req$body3.email, street = _req$body3.street, reference = _req$body3.reference, latitude = _req$body3.latitude, longitude = _req$body3.longitude, image = _req$body3.image;
-            _context8.next = 6;
+            _context9.next = 6;
             return _mysql["default"].query('INSERT INTO addresses (name, phone, nit, email, street, reference, Latitude, Longitude, image, persona_id) VALUE (?,?,?,?,?,?,?,?,?,?)', [name, phone, nit, email, street, reference, latitude, longitude, image, req.uid]);
 
           case 6:
@@ -428,83 +475,36 @@ var addStreetAddress = /*#__PURE__*/function () {
               resp: true,
               msg: 'Street Address added successfully'
             });
-            _context8.next = 12;
+            _context9.next = 12;
             break;
 
           case 9:
-            _context8.prev = 9;
-            _context8.t0 = _context8["catch"](2);
-            return _context8.abrupt("return", res.status(500).json({
+            _context9.prev = 9;
+            _context9.t0 = _context9["catch"](2);
+            return _context9.abrupt("return", res.status(500).json({
               resp: false,
-              msg: _context8.t0
+              msg: _context9.t0
             }));
 
           case 12:
           case "end":
-            return _context8.stop();
+            return _context9.stop();
         }
       }
-    }, _callee8, null, [[2, 9]]);
+    }, _callee9, null, [[2, 9]]);
   }));
 
-  return function addStreetAddress(_x8) {
-    return _ref8.apply(this, arguments);
+  return function addStreetAddress(_x9) {
+    return _ref9.apply(this, arguments);
   };
 }();
 
 exports.addStreetAddress = addStreetAddress;
 
 var getAddressOne = /*#__PURE__*/function () {
-  var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req) {
-    var res,
-        addressdb,
-        _args9 = arguments;
-    return _regenerator["default"].wrap(function _callee9$(_context9) {
-      while (1) {
-        switch (_context9.prev = _context9.next) {
-          case 0:
-            res = _args9.length > 1 && _args9[1] !== undefined ? _args9[1] : _express.response;
-            _context9.prev = 1;
-            _context9.next = 4;
-            return _mysql["default"].query('SELECT * FROM addresses WHERE persona_id = ? ORDER BY id DESC LIMIT 1', [req.uid]);
-
-          case 4:
-            addressdb = _context9.sent;
-            res.json({
-              resp: true,
-              msg: 'One Address',
-              address: addressdb[0]
-            });
-            _context9.next = 11;
-            break;
-
-          case 8:
-            _context9.prev = 8;
-            _context9.t0 = _context9["catch"](1);
-            return _context9.abrupt("return", res.status(500).json({
-              resp: false,
-              msg: _context9.t0
-            }));
-
-          case 11:
-          case "end":
-            return _context9.stop();
-        }
-      }
-    }, _callee9, null, [[1, 8]]);
-  }));
-
-  return function getAddressOne(_x9) {
-    return _ref9.apply(this, arguments);
-  };
-}();
-
-exports.getAddressOne = getAddressOne;
-
-var updateNotificationToken = /*#__PURE__*/function () {
   var _ref10 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee10(req) {
     var res,
-        nToken,
+        addressdb,
         _args10 = arguments;
     return _regenerator["default"].wrap(function _callee10$(_context10) {
       while (1) {
@@ -512,14 +512,15 @@ var updateNotificationToken = /*#__PURE__*/function () {
           case 0:
             res = _args10.length > 1 && _args10[1] !== undefined ? _args10[1] : _express.response;
             _context10.prev = 1;
-            nToken = req.body.nToken;
-            _context10.next = 5;
-            return _mysql["default"].query('UPDATE users SET notification_token = ? WHERE persona_id = ?', [nToken, req.uid]);
+            _context10.next = 4;
+            return _mysql["default"].query('SELECT * FROM addresses WHERE persona_id = ? ORDER BY id DESC LIMIT 1', [req.uid]);
 
-          case 5:
+          case 4:
+            addressdb = _context10.sent;
             res.json({
               resp: true,
-              msg: 'Token updated'
+              msg: 'One Address',
+              address: addressdb[0]
             });
             _context10.next = 11;
             break;
@@ -540,18 +541,17 @@ var updateNotificationToken = /*#__PURE__*/function () {
     }, _callee10, null, [[1, 8]]);
   }));
 
-  return function updateNotificationToken(_x10) {
+  return function getAddressOne(_x10) {
     return _ref10.apply(this, arguments);
   };
 }();
 
-exports.updateNotificationToken = updateNotificationToken;
+exports.getAddressOne = getAddressOne;
 
-var getAdminNotificationToken = /*#__PURE__*/function () {
+var updateNotificationToken = /*#__PURE__*/function () {
   var _ref11 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee11(req) {
     var res,
-        admisdb,
-        tokens,
+        nToken,
         _args11 = arguments;
     return _regenerator["default"].wrap(function _callee11$(_context11) {
       while (1) {
@@ -559,54 +559,101 @@ var getAdminNotificationToken = /*#__PURE__*/function () {
           case 0:
             res = _args11.length > 1 && _args11[1] !== undefined ? _args11[1] : _express.response;
             _context11.prev = 1;
-            _context11.next = 4;
-            return _mysql["default"].query('SELECT notification_token FROM users WHERE rol_id = 1');
+            nToken = req.body.nToken;
+            _context11.next = 5;
+            return _mysql["default"].query('UPDATE users SET notification_token = ? WHERE persona_id = ?', [nToken, req.uid]);
 
-          case 4:
-            admisdb = _context11.sent;
-            tokens = [];
-            admisdb.forEach(function (t) {
-              tokens.push(t.notification_token);
+          case 5:
+            res.json({
+              resp: true,
+              msg: 'Token updated'
             });
-            res.json(tokens);
-            _context11.next = 13;
+            _context11.next = 11;
             break;
 
-          case 10:
-            _context11.prev = 10;
+          case 8:
+            _context11.prev = 8;
             _context11.t0 = _context11["catch"](1);
-            return _context11.abrupt("return", res.status(501).json({
+            return _context11.abrupt("return", res.status(500).json({
               resp: false,
               msg: _context11.t0
             }));
 
-          case 13:
+          case 11:
           case "end":
             return _context11.stop();
         }
       }
-    }, _callee11, null, [[1, 10]]);
+    }, _callee11, null, [[1, 8]]);
   }));
 
-  return function getAdminNotificationToken(_x11) {
+  return function updateNotificationToken(_x11) {
     return _ref11.apply(this, arguments);
   };
 }();
 
-exports.getAdminNotificationToken = getAdminNotificationToken;
+exports.updateNotificationToken = updateNotificationToken;
 
-var updateDeliveryToClient = /*#__PURE__*/function () {
+var getAdminNotificationToken = /*#__PURE__*/function () {
   var _ref12 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee12(req) {
     var res,
+        admisdb,
+        tokens,
         _args12 = arguments;
     return _regenerator["default"].wrap(function _callee12$(_context12) {
       while (1) {
         switch (_context12.prev = _context12.next) {
           case 0:
             res = _args12.length > 1 && _args12[1] !== undefined ? _args12[1] : _express.response;
+            _context12.prev = 1;
+            _context12.next = 4;
+            return _mysql["default"].query('SELECT notification_token FROM users WHERE rol_id = 1');
+
+          case 4:
+            admisdb = _context12.sent;
+            tokens = [];
+            admisdb.forEach(function (t) {
+              tokens.push(t.notification_token);
+            });
+            res.json(tokens);
+            _context12.next = 13;
+            break;
+
+          case 10:
+            _context12.prev = 10;
+            _context12.t0 = _context12["catch"](1);
+            return _context12.abrupt("return", res.status(501).json({
+              resp: false,
+              msg: _context12.t0
+            }));
+
+          case 13:
+          case "end":
+            return _context12.stop();
+        }
+      }
+    }, _callee12, null, [[1, 10]]);
+  }));
+
+  return function getAdminNotificationToken(_x12) {
+    return _ref12.apply(this, arguments);
+  };
+}();
+
+exports.getAdminNotificationToken = getAdminNotificationToken;
+
+var updateDeliveryToClient = /*#__PURE__*/function () {
+  var _ref13 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee13(req) {
+    var res,
+        _args13 = arguments;
+    return _regenerator["default"].wrap(function _callee13$(_context13) {
+      while (1) {
+        switch (_context13.prev = _context13.next) {
+          case 0:
+            res = _args13.length > 1 && _args13[1] !== undefined ? _args13[1] : _express.response;
             console.log(req.params.idPerson);
-            _context12.prev = 2;
-            _context12.next = 5;
+            _context13.prev = 2;
+            _context13.next = 5;
             return _mysql["default"].query('UPDATE users SET rol_id = ? WHERE persona_id = ?', [2, req.params.idPerson]);
 
           case 5:
@@ -614,27 +661,27 @@ var updateDeliveryToClient = /*#__PURE__*/function () {
               resp: true,
               msg: 'Delivery To Client'
             });
-            _context12.next = 11;
+            _context13.next = 11;
             break;
 
           case 8:
-            _context12.prev = 8;
-            _context12.t0 = _context12["catch"](2);
-            return _context12.abrupt("return", res.status(501).json({
+            _context13.prev = 8;
+            _context13.t0 = _context13["catch"](2);
+            return _context13.abrupt("return", res.status(501).json({
               resp: false,
-              msg: _context12.t0
+              msg: _context13.t0
             }));
 
           case 11:
           case "end":
-            return _context12.stop();
+            return _context13.stop();
         }
       }
-    }, _callee12, null, [[2, 8]]);
+    }, _callee13, null, [[2, 8]]);
   }));
 
-  return function updateDeliveryToClient(_x12) {
-    return _ref12.apply(this, arguments);
+  return function updateDeliveryToClient(_x13) {
+    return _ref13.apply(this, arguments);
   };
 }();
 
