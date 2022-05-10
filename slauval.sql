@@ -373,7 +373,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_GET_PRODUCTS_TOP`()
 BEGIN
 	SELECT pro.id, pro.nameProduct, pro.description, pro.price, pro.status, ip.picture, c.category, c.id AS category_id FROM products pro
 	INNER JOIN categories c ON pro.category_id = c.id
-	INNER JOIN imageProduct ip ON pro.id = ip.product_id
+	INNER JOIN imageproduct ip ON pro.id = ip.product_id
 	INNER JOIN ( SELECT product_id, MIN(id) AS id_image FROM imageproduct GROUP BY product_id) p3 ON ip.product_id = p3.product_id AND ip.id = p3.id_image
 	LIMIT 10;
 END ;;
@@ -682,4 +682,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-10  9:40:52
+-- Dump completed on 2022-05-10  9:47:58
