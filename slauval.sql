@@ -374,7 +374,7 @@ BEGIN
 	SELECT pro.id, pro.nameProduct, pro.description, pro.price, pro.status, ip.picture, c.category, c.id AS category_id FROM products pro
 	INNER JOIN categories c ON pro.category_id = c.id
 	INNER JOIN imageProduct ip ON pro.id = ip.product_id
-	INNER JOIN ( SELECT product_id, MIN(id) AS id_image FROM imageProduct GROUP BY product_id) p3 ON ip.product_id = p3.product_id AND ip.id = p3.id_image
+	INNER JOIN ( SELECT product_id, MIN(id) AS id_image FROM imageproduct GROUP BY product_id) p3 ON ip.product_id = p3.product_id AND ip.id = p3.id_image
 	LIMIT 10;
 END ;;
 DELIMITER ;
@@ -594,12 +594,12 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SEARCH_PRODUCT`(IN nameProduct VARCHAR(100))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_SEARCH_PRODUCT`(IN `nameProduct` VARCHAR(100))
 BEGIN
 	SELECT pro.id, pro.nameProduct, pro.description, pro.price, pro.status, ip.picture, c.category, c.id AS category_id FROM products pro
 	INNER JOIN categories c ON pro.category_id = c.id
-	INNER JOIN imageProduct ip ON pro.id = ip.product_id
-	INNER JOIN ( SELECT product_id, MIN(id) AS id_image FROM imageProduct GROUP BY product_id) p3 ON ip.product_id = p3.product_id AND ip.id = p3.id_image
+	INNER JOIN imageproduct ip ON pro.id = ip.product_id
+	INNER JOIN ( SELECT product_id, MIN(id) AS id_image FROM imageproduct GROUP BY product_id) p3 ON ip.product_id = p3.product_id AND ip.id = p3.id_image
 	WHERE pro.nameProduct LIKE CONCAT('%', nameProduct , '%');
 END ;;
 DELIMITER ;
@@ -682,4 +682,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-10  9:06:02
+-- Dump completed on 2022-05-10  9:40:52
