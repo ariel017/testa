@@ -12,10 +12,10 @@ var _mysql = _interopRequireDefault(require("mysql"));
 var _util = require("util");
 
 var pool = _mysql["default"].createPool({
-  host: 'sql5.freemysqlhosting.net',
-  user: 'sql5490230',
-  password: "enthSjjdgu",
-  database: 'sql5490230'
+  host: 'localhost',
+  user: 'lauval',
+  password: "admin123",
+  database: 'frave_food'
 });
 
 pool.getConnection(function (err, connection) {

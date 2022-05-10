@@ -446,6 +446,7 @@ exports.deleteStreetAddress = deleteStreetAddress;
 var addStreetAddress = /*#__PURE__*/function () {
   var _ref9 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee9(req) {
     var res,
+        imagePath,
         _req$body3,
         name,
         phone,
@@ -463,35 +464,35 @@ var addStreetAddress = /*#__PURE__*/function () {
         switch (_context9.prev = _context9.next) {
           case 0:
             res = _args9.length > 1 && _args9[1] !== undefined ? _args9[1] : _express.response;
-            console.log("test" + req.uid); //const imagePath = req.file.filename;
-
-            _context9.prev = 2;
+            console.log("test" + req.uid);
+            imagePath = req.file.filename;
+            _context9.prev = 3;
             _req$body3 = req.body, name = _req$body3.name, phone = _req$body3.phone, nit = _req$body3.nit, email = _req$body3.email, street = _req$body3.street, reference = _req$body3.reference, latitude = _req$body3.latitude, longitude = _req$body3.longitude, image = _req$body3.image;
-            _context9.next = 6;
-            return _mysql["default"].query('INSERT INTO addresses (name, phone, nit, email, street, reference, Latitude, Longitude, image, persona_id) VALUE (?,?,?,?,?,?,?,?,?,?)', [name, phone, nit, email, street, reference, latitude, longitude, image, req.uid]);
+            _context9.next = 7;
+            return _mysql["default"].query('INSERT INTO addresses (name, phone, nit, email, street, reference, Latitude, Longitude, image, persona_id) VALUE (?,?,?,?,?,?,?,?,?,?)', [name, phone, nit, email, street, reference, latitude, longitude, imagePath, req.uid]);
 
-          case 6:
+          case 7:
             res.json({
               resp: true,
               msg: 'Street Address added successfully'
             });
-            _context9.next = 12;
+            _context9.next = 13;
             break;
 
-          case 9:
-            _context9.prev = 9;
-            _context9.t0 = _context9["catch"](2);
+          case 10:
+            _context9.prev = 10;
+            _context9.t0 = _context9["catch"](3);
             return _context9.abrupt("return", res.status(500).json({
               resp: false,
               msg: _context9.t0
             }));
 
-          case 12:
+          case 13:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[2, 9]]);
+    }, _callee9, null, [[3, 10]]);
   }));
 
   return function addStreetAddress(_x9) {
